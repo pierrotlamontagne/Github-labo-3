@@ -8,7 +8,7 @@ from scipy.optimize import curve_fit
 def gauss(x, H, A, x0, sigma):
     return H + A * np.exp(-(x - x0) ** 2 / (2 * sigma ** 2))
 
-def fit_gaussien(x,y,p0 = [1,1,1,1]): 
+def fit_gaussien(x,y,p0 = [1,1,1,1],graph = False): 
     
     """
     Ajuste une gaussienne sur la fonction donnée
@@ -32,9 +32,10 @@ def fit_gaussien(x,y,p0 = [1,1,1,1]):
 
     y_fit = gauss(x, H, A, x0, sigma)
 
-    plt.plot(x, y)
-    plt.plot(x, y_fit)
-    plt.show()
+    if graph == True:
+        plt.plot(x, y)
+        plt.plot(x, y_fit)
+        plt.show()
     
     return y_fit, p_opt, p_err
 
