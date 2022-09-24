@@ -1,0 +1,182 @@
+\documentclass[10pt,letterpaper,twocolumn]{article}
+
+%2012-10-01 - Document préparé par David Lafrenière, pour le cours PHY3040.
+
+%Pour langue et caractères spéciaux
+\usepackage[french]{babel} 
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+
+%Pour ajuster les marges
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm, columnsep=20pt]{geometry}
+
+% Pour la commande onecolabstract (résumé 1 pleine largeur)
+\usepackage{abstract}
+	\renewcommand{\abstractnamefont}{\normalfont\bfseries}
+	\renewcommand{\abstracttextfont}{\normalfont\itshape}
+
+% Pour les titres de section/sous-section
+\usepackage[compact]{titlesec}
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize}{\thesubsubsection}{1em}{}
+
+%pour inclure des graphiques
+\usepackage{graphicx}
+
+%pour tableaux deluxetable
+\usepackage{deluxetable}
+
+%Pour inclure des adresse web
+\usepackage{url}
+
+%Titre
+\title{\vspace{-10mm}\Large
+Modèle \LaTeX\ pour rapports de laboratoire %%%***éditer cette ligne***
+\vspace{-4mm}}
+
+%Auteur
+\author{\large
+David Lafrenière %%%***éditer cette ligne***
+}
+\date{\vspace{-8mm}}
+
+\begin{document}
+
+\twocolumn[
+\maketitle
+\begin{onecolabstract}
+%***remplacer le texte qui suit par votre résumé***
+\noindent Ce modèle de document \LaTeX\ est recommandé pour vos rapports de laboratoire du cours PHY3040. La taille des caractères, les marges, les colonnes et les autres styles y sont correctement définis. Vous n'avez qu'à entrer le corps du texte, vos figures, vos tables et vos références. Quelques commandes \LaTeX\ de base y sont aussi présentées, consultez le document source {\em modele\_phy3040.tex} pour voir leur syntaxe. 
+\vspace{4mm} %
+\end{onecolabstract}
+]
+
+%***à partir d'ici, éditer à votre guise***
+\section{Introduction}\label{intro}
+
+\LaTeX\ est un langage de composition de documents largement utilisé en sciences. \LaTeX\ facilite la mise en forme du document, la composition d'équations complexes, la gestion des références et citations, la numérotation des tables et figures, et bien plus. Ce document fournit un modèle pour la préparation de vos rapports de laboratoire du cours PHY3040 et présente quelques commandes \LaTeX\ de bases. Pour plus d'information sur la rédaction de documents \LaTeX\ et sur les différentes commandes et leur syntaxe, vous pouvez consulter le {\em wikibook} \LaTeX, disponible à \url{http://en.wikibooks.org/wiki/LaTeX/} (version PDF disponible sur le site), le document {\em The Not So Short Introduction To \LaTeX\ 2$\epsilon$}, disponible à \url{http://tobi.oetiker.ch/lshort/lshort.pdf}, ou tout autre ouvrage sur l'utilisation de \LaTeX.
+
+\section{Sections et sous-sections}
+
+Les sections sont définies par la commande \verb|\section{nom de la section}|, les sous-sections par \verb|\subsection{}|, et les sous-sous-sections par \verb|\subsubsection{}|. Les numéros des sections et la taille des caractères sont automatiquement définis. Dans le texte, on peut référer à une section en utilisant la commande \verb|\ref{}| en combinaison avec la commande \verb|\label{}|. Par exemple, la section suivante est définie par la commande \verb|\section{Équations}\label{sec:eq}|, on peut donc y référer en utilisant la commande \verb|\ref{sec:eq}|, ce qui donne le résultat suivant: les équations seront discutées à la section \ref{sec:eq}.
+
+\section{Équations}\label{sec:eq}
+
+\subsection{Équations directement dans le texte}
+
+Les équations peuvent être insérées directement dans le texte en les écrivant entre deux signes de dollar (\$). Par exemple,  \verb|$n_1 \cos{\theta_1}=n_2 \cos{\theta_2}$| donnera ceci: $n_1 \cos{\theta_1}=n_2 \cos{\theta_2}$. Dans ce cas, l'équation n'est pas numérotée.
+
+\subsection{Équations sur une ligne à part}
+
+Les équations peuvent aussi occuper leur propre ligne, en utilisant \verb|\begin{equation}| et \verb|\end{equation}|. Voici un exemple:
+
+\begin{equation}\label{eq1}
+n_1 \cos{\theta_1}=n_2 \cos{\theta_2}.
+\end{equation}
+
+\noindent Dans ce cas, elles sont numérotées automatiquement. Comme pour les sections, on peut référer à l'équation \ref{eq1} en utilisant la commande \verb|\ref{}| en combinaison avec la commande \verb|\label{}|.
+
+\section{Figures}
+
+Un graphique peut être inséré à l'aide de la commande \verb+includegraphics{}+. Cette commande comporte quelques options pour ajuster la taille ou l'orientation de l'image, en voici quelques exemples:
+\begin{verbatim}
+\includegraphics{fig.pdf}
+\includegraphics[height=60mm]{fig.jpg}
+\includegraphics[width=0.8\linewidth]{fig.png}
+\includegraphics[scale=0.75]{fig.pdf}
+\includegraphics[angle=45]{fig.pdf}
+\end{verbatim}
+
+Selon le compilateur utilisé, {\em pdflatex} ou {\em latex}, seulement quelques formats de fichiers graphiques peuvent être insérés. Avec le compilateur {\em pdflatex}, seulement les formats PDF, PNG, et JPEG sont supportés, alors qu'avec le compilateur {\em latex}, seulement le format PS (ou EPS) est supporté. Pour être correctement numérotées et bien positionnées, les figures doivent être insérées dans l'environnement {\em figure}, avec les commandes \verb+\begin{figure}+ et \verb+\end{figure}+, comme dans l'exemple qui suit:
+\begin{verbatim}
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{logo}
+\caption{\label{fig:logo} Logo de 
+l'Université de Montréal.}
+\end{figure}
+\end{verbatim}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\linewidth]{logo}
+\caption{\label{fig:logo} Logo de l'Université de Montréal.}
+\end{figure}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.8\textwidth]{logo}
+\caption{\label{fig:logo2} Logo de l'Université de Montréal.}
+\end{figure*}
+
+Ceci donne le résultat montré à la figure~\ref{fig:logo}, où la figure apparaît sur une seule colonne. Pour insérer une figure qui s'étend en largeur sur les deux colonnes, il faut plutôt utiliser l'environnement {\em figure*}, avec les commandes \verb+\begin{figure*}+ et \verb+\end{figure*}+. Un tel exemple est montré à la figure~\ref{fig:logo2}. La description de la figure est ajoutée à l'aide de la commande \verb+\caption{}+, laquelle doit être placée à l'intérieur de l'environnement {\em figure}.
+
+Comme pour les sections et les équations, on peut référer à une figure donnée en utilisant la commande \verb|\ref{}| en combinaison avec la commande \verb|\label{}|.
+
+\section{Tableaux}
+
+De façon similaire aux figures, il faut placer les tableaux dans l'environnement {\em table}, avec les commandes \verb+\begin{table}+ et \verb+\end{table}+. Ensuite, à l'intérieur de cet environnement on doit entrer dans un autre environnement, {\em tabular}, avec les commandes \verb+\begin{tabular}+ et \verb+\end{tabular}+. C'est à l'intérieur de l'environnement {\em tabular} que l'on construit la table. Par exemple, le code suivant donne le résultat montré à la table~\ref{tab}.
+\begin{verbatim}
+\begin{table}[th]
+\label{tab}
+\centering
+\begin{tabular}{ l | c | c }
+   & $I_{\rm max}$ & $I_{\rm min}$  \\
+   & (A) & (A)  \\
+\hline
+Montage A & 15 & 9 \\
+Montage B & 25 & 2 \\
+Montage C & 18 & 16
+\end{tabular}
+\caption{Courants maximum et minimum
+observés.}
+\end{table}
+\end{verbatim}
+
+\begin{table}[th]
+\centering
+\begin{tabular}{ l | c | c }
+   & $I_{\rm max}$ & $I_{\rm min}$  \\
+   & (A) & (A)  \\
+\hline
+Montage A & 15 & 9 \\
+Montage B & 25 & 2 \\
+Montage C & 18 & 16
+\end{tabular}
+\caption{\label{tab} Courants maximum et minimum observés.}
+\end{table}
+
+L'exemple ci-haut positionne la table sur une seule colonne. Pour insérer une table qui s'étend en largeur sur les deux colonnes, il faut plutôt utiliser l'environnement {\em table*}, avec les commandes \verb+\begin{table*}+ et \verb+\end{table*}+. Il est conseillé de consulter les documents suggérés à la section~\ref{intro} pour avoir plus d'information sur les tables.
+
+Il existe aussi d'autres environnement pour créer des tables, par exemple l'environnement {\em deluxetable}. Un exemple de table faite avec cet environnement est montré à la table~\ref{tab2}. L'environnement {\em deluxetable} est présenté en détail dans le guide AASTeX, disponible à \url{http://aastex.aas.org/aasguide.pdf}.
+
+\begin{deluxetable}{lcc}
+\tablewidth{0pt}
+\tablecaption{\label{tab2} Courants maximum et minimum observés.}
+\tablehead{
+& \colhead{$I_{\rm max}$ (A)} & \colhead{$I_{\rm min}$ (A)}
+}
+\startdata
+Montage A & 15 & 9 \\
+Montage B & 25 & 2 \\
+Montage C & 18 & 16
+\enddata
+\end{deluxetable}
+
+Finalement, on peut référer à une table donnée en utilisant la commande \verb|\ref{}| en combinaison avec la commande \verb|\label{}|.
+
+\section{Insertion de références}
+
+On peut inclure une référence, par exemple \cite{ref1}, en utilisant la commande \verb|\cite{}| en combinaison avec la commande \verb|\bibitem{}|. Les références sont définies dans la section {\em thebibliography} à la fin du document et sont automatiquement ajoutées lors de la compilation.
+
+\section{Note sur l'utilisation de \LaTeX}
+
+Pour utiliser \LaTeX, il est nécessaire d'avoir un compilateur sur son système. Pour {\em Windows}, un bon compilateur est {\em MikTeX}, disponible à \url{http://miktex.org/}; pour {\em MAC OS}, un bon compilateur est {\em MacTeX}, disponible à \url{http://www.tug.org/mactex/}. De plus, il est suggéré d'utiliser une interface graphique pour l'édition et la compilation de document \LaTeX. De bonnes possibilités sont {\em TeXnicCenter} pour {\em Windows}, disponible à \url{http://www.texniccenter.org/}, et {\em TeXShop} pour {\em MAC OS}, disponible à \url{http://darkwing.uoregon.edu/~koch/texshop/texshop.html} (et inclus dans la distribution {\em MacTeX}); il existe d'autres options.
+
+\begin{thebibliography}{1}
+\bibitem{ref1} texte de la référence
+\end{thebibliography}
+
+\end{document}
