@@ -121,3 +121,10 @@ def beau_graphique():
     fig.patch.set_facecolor('w')
 
     return fig
+
+#########################################################################################################################################################################
+### Recherche de maximum
+
+def find_max(array):
+    v_max=np.amax(array)
+    return v_max
