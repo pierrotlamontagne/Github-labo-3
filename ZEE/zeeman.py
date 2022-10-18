@@ -65,19 +65,31 @@ class zeeman:
         plt.title("Polarisation sigma")
         plt.show()
         
-    def methode_1D(self): 
+    def methode_1D(self,zoom=None): 
         data_1D = self.data_array[self.iy_mil:,self.ix_mil,1]
         y = np.arange(self.iy_mil,self.iy_max,1)
-        
+            
+        if zoom != None: 
+            i_debut = zoom[0]
+            i_fin = zoom[1]
+            data_1D = self.data_array[i_debut:i_fin,self.ix_mil,1]
+            y = np.arange(i_debut,i_fin,1)
+            
         plt.plot(y,data_1D)
         plt.xlabel("y")
         plt.ylabel("Intensité")
         plt.title("Profil d'intensité 45 degrés")
         plt.show()
         
-    def methode_1D_pi(self): 
+    def methode_1D_pi(self,zoom=None): 
         data_1D = self.data_array_pi[self.iy_mil:,self.ix_mil,1]
         y = np.arange(self.iy_mil,self.iy_max,1)
+        
+        if zoom != None: 
+            i_debut = zoom[0]
+            i_fin = zoom[1]
+            data_1D = self.data_array_pi[i_debut:i_fin,self.ix_mil,1]
+            y = np.arange(i_debut,i_fin,1)
         
         plt.plot(y,data_1D)
         plt.xlabel("y")
@@ -85,9 +97,15 @@ class zeeman:
         plt.title("Profil d'intensité pi")
         plt.show()
         
-    def methode_1D_sigma(self): 
+    def methode_1D_sigma(self,zoom=None): 
         data_1D = self.data_array_sigma[self.iy_mil:,self.ix_mil,1]
         y = np.arange(self.iy_mil,self.iy_max,1)
+        
+        if zoom != None: 
+            i_debut = zoom[0]
+            i_fin = zoom[1]
+            data_1D = self.data_array_sigma[i_debut:i_fin,self.ix_mil,1]
+            y = np.arange(i_debut,i_fin,1)
         
         plt.plot(y,data_1D)
         plt.xlabel("y")
