@@ -111,13 +111,14 @@ class zeeman:
             i_fin = self.i_mins[0][pic]
             plt.plot(self.y[i_debut:i_fin],self.data_1D[i_debut:i_fin])
             plt.vlines(self.pics_array[pic-1],0,250,linestyle="--",color="g") 
+            plt.title("Profil d'intensité 45 degrés (pic = {})".format(pic))
         
         if pic == None:   
             plt.plot(self.y,self.data_1D)
+            plt.title("Profil d'intensité 45 degrés")
             
         plt.xlabel("y")
         plt.ylabel("Intensité")
-        plt.title("Profil d'intensité 45 degrés")
         plt.show()
         
     def methode_1D_pi(self,pic=None): 
@@ -127,13 +128,14 @@ class zeeman:
             i_fin = self.i_mins_pi[0][pic]
             plt.plot(self.y[i_debut:i_fin],self.data_1D_pi[i_debut:i_fin])
             plt.vlines(self.pics_array_pi[pic-1],0,250,linestyle="--",color="g") 
+            plt.title("Profil d'intensité pi (pic = {})".format(pic))
         
         if pic == None:   
             plt.plot(self.y,self.data_1D_pi)
+            plt.title("Profil d'intensité pi")
             
         plt.xlabel("y")
         plt.ylabel("Intensité")
-        plt.title("Profil d'intensité pi")
         plt.show()
         
     def methode_1D_sigma(self,pic=None): 
@@ -143,13 +145,14 @@ class zeeman:
             i_fin = self.i_mins_sigma[0][pic]
             plt.plot(self.y[i_debut:i_fin],self.data_1D_sigma[i_debut:i_fin])
             plt.vlines(self.pics_array_sigma[pic-1],0,250,linestyle="--",color="g") 
+            plt.title("Profil d'intensité sigma (pic = {})".format(pic))
         
         if pic == None:   
             plt.plot(self.y,self.data_1D_sigma)
+            plt.title("Profil d'intensité sigma")
             
         plt.xlabel("y")
         plt.ylabel("Intensité")
-        plt.title("Profil d'intensité sigma")
         plt.show()
         
       
