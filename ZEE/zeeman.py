@@ -27,8 +27,8 @@ class zeeman:
         
         #Indices de l'image
         #Milieu
-        self.ix_mil = int(np.shape(self.data_array)[1]/2) - 60
-        self.iy_mil = int(np.shape(self.data_array)[0]/2) + 75
+        self.ix_mil = int(np.shape(self.data_array)[1]/2) +45
+        self.iy_mil = int(np.shape(self.data_array)[0]/2) +5
         
         #Min
         self.ix_min = 0
@@ -65,37 +65,52 @@ class zeeman:
         plt.title("Polarisation sigma")
         plt.show()
         
-    def methode_1D(self): 
-        data_1D = self.data_array[self.iy_mil,self.ix_mil:,1]
-        x = np.arange(self.ix_mil,self.ix_max,1)
-        
-        plt.plot(x,data_1D)
-        plt.xlabel("x")
+    def methode_1D(self,zoom=None): 
+        data_1D = self.data_array[self.iy_mil:,self.ix_mil,1]
+        y = np.arange(self.iy_mil,self.iy_max,1)
+            
+        if zoom != None: 
+            i_debut = zoom[0]
+            i_fin = zoom[1]
+            data_1D = self.data_array[i_debut:i_fin,self.ix_mil,1]
+            y = np.arange(i_debut,i_fin,1)
+            
+        plt.plot(y,data_1D)
+        plt.xlabel("y")
         plt.ylabel("Intensité")
         plt.title("Profil d'intensité 45 degrés")
         plt.show()
-        plt.show()
         
-    def methode_1D_pi(self): 
-        data_1D_pi = self.data_array_pi[self.iy_mil,self.ix_mil:,1]
-        x = np.arange(self.ix_mil,self.ix_max,1)
+    def methode_1D_pi(self,zoom=None): 
+        data_1D = self.data_array_pi[self.iy_mil:,self.ix_mil,1]
+        y = np.arange(self.iy_mil,self.iy_max,1)
         
-        plt.plot(x,data_1D_pi)
-        plt.xlabel("x")
+        if zoom != None: 
+            i_debut = zoom[0]
+            i_fin = zoom[1]
+            data_1D = self.data_array_pi[i_debut:i_fin,self.ix_mil,1]
+            y = np.arange(i_debut,i_fin,1)
+        
+        plt.plot(y,data_1D)
+        plt.xlabel("y")
         plt.ylabel("Intensité")
         plt.title("Profil d'intensité pi")
         plt.show()
-        plt.show()
         
-    def methode_1D_sigma(self): 
-        data_1D_sigma = self.data_array_sigma[self.iy_mil,self.ix_mil:,1]
-        x = np.arange(self.ix_mil,self.ix_max,1)
+    def methode_1D_sigma(self,zoom=None): 
+        data_1D = self.data_array_sigma[self.iy_mil:,self.ix_mil,1]
+        y = np.arange(self.iy_mil,self.iy_max,1)
         
-        plt.plot(x,data_1D_sigma)
-        plt.xlabel("x")
+        if zoom != None: 
+            i_debut = zoom[0]
+            i_fin = zoom[1]
+            data_1D = self.data_array_sigma[i_debut:i_fin,self.ix_mil,1]
+            y = np.arange(i_debut,i_fin,1)
+        
+        plt.plot(y,data_1D)
+        plt.xlabel("y")
         plt.ylabel("Intensité")
         plt.title("Profil d'intensité sigma")
-        plt.show()
         plt.show()
         
       
