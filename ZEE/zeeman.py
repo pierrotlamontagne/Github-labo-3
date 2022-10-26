@@ -110,7 +110,8 @@ class zeeman:
             i_debut = self.i_mins[0][pic-1]
             i_fin = self.i_mins[0][pic]
             plt.plot(self.y[i_debut:i_fin],self.data_1D[i_debut:i_fin])
-            plt.vlines(self.pics_array[pic-1],0,250,linestyle="--",color="g") 
+            plt.vlines(self.pics_array[pic-1],0,250,linestyle="--",color="g")
+            print(self.pics_array[pic-1])
             plt.title("Profil d'intensité 45 degrés (pic = {})".format(pic))
         
         if pic == None:   
