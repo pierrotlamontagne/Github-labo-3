@@ -10,7 +10,7 @@ from scipy.optimize import curve_fit
 
 class zeeman:
     
-    def __init__(self, input_file, input_file_pi, input_file_sigma): 
+    def __init__(self, input_file, input_file_pi, input_file_sigma,bleu=False): 
         
         # Fichiers de input
         self.input_file = input_file
@@ -41,16 +41,30 @@ class zeeman:
         self.iy_max = int(np.shape(self.data_array)[0])
         
         #Luminosity data in the y-axis down
-        self.y = np.arange(self.iy_mil,self.iy_max,1)
-        self.data_1D = self.data_array[self.iy_mil:,self.ix_mil,1]
-        self.data_1D_pi = self.data_array_pi[self.iy_mil:,self.ix_mil,1]
-        self.data_1D_sigma = self.data_array_sigma[self.iy_mil:,self.ix_mil,1]
+        if bleu == True: 
+            self.y = np.arange(self.iy_mil,self.iy_max,1)
+            self.data_1D = self.data_array[self.iy_mil:,self.ix_mil,2]
+            self.data_1D_pi = self.data_array_pi[self.iy_mil:,self.ix_mil,2]
+            self.data_1D_sigma = self.data_array_sigma[self.iy_mil:,self.ix_mil,2]
+            
+        else:
+            self.y = np.arange(self.iy_mil,self.iy_max,1)
+            self.data_1D = self.data_array[self.iy_mil:,self.ix_mil,1]
+            self.data_1D_pi = self.data_array_pi[self.iy_mil:,self.ix_mil,1]
+            self.data_1D_sigma = self.data_array_sigma[self.iy_mil:,self.ix_mil,1]
         
         #Pics 
         #Minimums permettant de sectionner les groupes de raies 
-        self.i_mins = find_peaks(-self.data_1D,height=240,distance=30)
-        self.i_mins_pi = find_peaks(-self.data_1D_pi,height=240,distance=30)
-        self.i_mins_sigma = find_peaks(-self.data_1D_sigma,height=240,distance=30)
+        if bleu == True:
+            self.i_mins = find_peaks(-self.data_1D,height=240,distance=30)
+            self.i_mins_pi = find_peaks(-self.data_1D_pi,height=240,distance=30)
+            self.i_mins_sigma = find_peaks(-self.data_1D_sigma,height=240,distance=30) 
+            
+        else: 
+            
+            self.i_mins = find_peaks(-self.data_1D,height=240,distance=30)
+            self.i_mins_pi = find_peaks(-self.data_1D_pi,height=240,distance=30)
+            self.i_mins_sigma = find_peaks(-self.data_1D_sigma,height=240,distance=30)
 
         #Trouver les pics dans les sections
         self.pics_array = [] #Chaque élément sera une liste des pics d'une section
@@ -104,57 +118,115 @@ class zeeman:
         plt.title("Polarisation sigma")
         plt.show()
         
-    def methode_1D(self,pic=None): 
+    def methode_1D(self,pic=False): 
   
-        if pic != None: 
-            i_debut = self.i_mins[0][pic-1]
-            i_fin = self.i_mins[0][pic]
-            plt.plot(self.y[i_debut:i_fin],self.data_1D[i_debut:i_fin])
-            plt.vlines(self.pics_array[pic-1],0,250,linestyle="--",color="g")
-            print(self.pics_array[pic-1])
-            plt.title("Profil d'intensité 45 degrés (pic = {})".format(pic))
+        if pic == True: 
+            n_pics = len(self.pics_array)
+            fig,axes = plt.subplots(n_pics,figsize=(10,35),squeeze=True)
+            for p in range(n_pics):
+                ax = axes[p]
+                i_debut = self.i_mins[0][p]
+                i_fin = self.i_mins[0][p+1]
+                ax.plot(self.y[i_debut:i_fin],self.data_1D[i_debut:i_fin],label="pic = {}".format(p+1))
+                ax.vlines(self.pics_array[p],0,250,linestyle="--",color="g") 
+                ax.set_xlabel("y")
+                ax.set_ylabel("Intensité")
+                ax.legend()
         
-        if pic == None:   
+        if pic == False:   
             plt.plot(self.y,self.data_1D)
-            plt.title("Profil d'intensité 45 degrés")
-            
-        plt.xlabel("y")
-        plt.ylabel("Intensité")
+            plt.title("Profil d'intensité")
+            plt.xlabel("y")
+            plt.ylabel("Intensité")
+        
         plt.show()
         
-    def methode_1D_pi(self,pic=None): 
+    def methode_1D_pi(self,pic=False): 
         
-        if pic != None: 
-            i_debut = self.i_mins_pi[0][pic-1]
-            i_fin = self.i_mins_pi[0][pic]
-            plt.plot(self.y[i_debut:i_fin],self.data_1D_pi[i_debut:i_fin])
-            plt.vlines(self.pics_array_pi[pic-1],0,250,linestyle="--",color="g") 
-            plt.title("Profil d'intensité pi (pic = {})".format(pic))
+        if pic == True: 
+            n_pics = len(self.pics_array_pi)
+            fig,axes = plt.subplots(n_pics,figsize=(10,35),squeeze=True)
+            for p in range(n_pics):
+                ax = axes[p]
+                i_debut = self.i_mins_pi[0][p]
+                i_fin = self.i_mins_pi[0][p+1]
+                ax.plot(self.y[i_debut:i_fin],self.data_1D_pi[i_debut:i_fin],label="pic = {}".format(p+1))
+                ax.vlines(self.pics_array_pi[p],0,250,linestyle="--",color="g") 
+                ax.set_xlabel("y")
+                ax.set_ylabel("Intensité")
+                ax.legend()
         
-        if pic == None:   
+        if pic == False:   
             plt.plot(self.y,self.data_1D_pi)
             plt.title("Profil d'intensité pi")
-            
-        plt.xlabel("y")
-        plt.ylabel("Intensité")
+            plt.xlabel("y")
+            plt.ylabel("Intensité")
+        
         plt.show()
         
-    def methode_1D_sigma(self,pic=None): 
+    def methode_1D_sigma(self,pic=False): 
         
-        if pic != None: 
-            i_debut = self.i_mins_sigma[0][pic-1]
-            i_fin = self.i_mins_sigma[0][pic]
-            plt.plot(self.y[i_debut:i_fin],self.data_1D_sigma[i_debut:i_fin])
-            plt.vlines(self.pics_array_sigma[pic-1],0,250,linestyle="--",color="g") 
-            plt.title("Profil d'intensité sigma (pic = {})".format(pic))
-        
-        if pic == None:   
+        if pic == True: 
+            n_pics = len(self.pics_array_sigma)
+            fig,axes = plt.subplots(n_pics,figsize=(10,35),squeeze=True)
+            for p in range(n_pics):
+                ax = axes[p]
+                i_debut = self.i_mins_sigma[0][p]
+                i_fin = self.i_mins_sigma[0][p+1]
+                ax.plot(self.y[i_debut:i_fin],self.data_1D_sigma[i_debut:i_fin],label="pic = {}".format(p+1))
+                ax.vlines(self.pics_array_sigma[p],0,250,linestyle="--",color="g") 
+                ax.set_xlabel("y")
+                ax.set_ylabel("Intensité")
+                ax.legend()
+    
+        if pic == False:   
             plt.plot(self.y,self.data_1D_sigma)
             plt.title("Profil d'intensité sigma")
-            
-        plt.xlabel("y")
-        plt.ylabel("Intensité")
+            plt.xlabel("y")
+            plt.ylabel("Intensité")
+    
         plt.show()
         
+        
+    def energie(self,skip=0):
+        plt.figure(1, figsize=(10,4), dpi=400)
+        plt.xlabel("Rang du pic d'interférence (discret)")
+        plt.ylabel("Rayon des pics secondaires $r^2\ (m^2)$")
+        #specify x-axis locations
+        x_ticks = [1, 2, 3, 4, 5]
+        #add x-axis values to plot
+        plt.xticks(ticks=x_ticks)
+
+        y1, popt1, pcov1 = reg_lin(np.arange(1,len(self.pics_array[0+skip])+1,1) ,self.pics_array[0+skip]**2)
+        plt.plot(np.arange(1,len(self.pics_array[0+skip])+1,1) ,self.pics_array[0+skip]**2 , ls="none", marker="d", mec="black", mfc="none")
+        plt.plot(np.arange(1,len(self.pics_array[0+skip])+1,1) , y1 , ls="--" , color="black", label="1")
+
+        y2, popt2, pcov2 = reg_lin(np.arange(1,len(self.pics_array[1+skip])+1,1) ,self.pics_array[1+skip]**2)
+        plt.plot(np.arange(1,len(self.pics_array[1+skip])+1,1) ,self.pics_array[1+skip]**2 , ls="none", marker="x", mec="b", mfc="none")
+        plt.plot(np.arange(1,len(self.pics_array[1+skip])+1,1) , y2 , ls="--" , color="b", label="2")
+
+        y3, popt3, pcov3 = reg_lin(np.arange(1,len(self.pics_array[2+skip])+1,1) ,self.pics_array[2+skip]**2)
+        plt.plot(np.arange(1,len(self.pics_array[2+skip])+1,1) ,self.pics_array[2+skip]**2 , ls="none", marker="^", mec="g", mfc="none")
+        plt.plot(np.arange(1,len(self.pics_array[2+skip])+1,1) , y3 , ls="--" , color="g", label="3")
+
+        y4, popt4, pcov4 = reg_lin(np.arange(1,len(self.pics_array[3+skip])+1,1) ,self.pics_array[3+skip]**2)
+        plt.plot(np.arange(1,len(self.pics_array[3+skip])+1,1) ,self.pics_array[3+skip]**2 , ls="none", marker="o", mec="r", mfc="none")
+        plt.plot(np.arange(1,len(self.pics_array[3+skip])+1,1) , y4 , ls="--" , color="r", label="4")
+
+        y5, popt5, pcov5 = reg_lin(np.arange(1,len(self.pics_array[4+skip])+1,1) ,self.pics_array[4+skip]**2)
+        plt.plot(np.arange(1,len(self.pics_array[4+skip])+1,1) ,self.pics_array[4+skip]**2 , ls="none", marker="v", mec="y", mfc="none")
+        plt.plot(np.arange(1,len(self.pics_array[4+skip])+1,1) , y5 , ls="--" , color="y", label="5")
+
+        plt.legend()
+
+        parametre = np.array([[popt1, popt2, popt3, popt4, popt5], [pcov1, pcov2, pcov3, pcov4, pcov5]])
+
+        energie1 = parametre[0,0,1]/parametre[0,0,0]
+        energie2 = parametre[0,1,1]/parametre[0,1,0]
+        energie3 = parametre[0,2,1]/parametre[0,2,0]
+        energie4 = parametre[0,3,1]/parametre[0,3,0]
+        energie5 = parametre[0,4,1]/parametre[0,4,0]
+        energie_tot = np.array([energie1, energie2, energie3, energie4, energie5])
+        print(energie_tot)
       
         
