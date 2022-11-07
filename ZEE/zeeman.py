@@ -7,6 +7,7 @@ from fonctions_maison import *
 from PIL import Image
 from scipy.signal import find_peaks
 from scipy.optimize import curve_fit 
+from skimage.draw import circle_perimeter
 
 class zeeman:
     
@@ -89,7 +90,6 @@ class zeeman:
             pics_sigma = find_peaks(self.data_1D_sigma[self.i_mins_sigma[0][i]:self.i_mins_sigma[0][i+1]],height=20)
             y_pic_sigma = self.y[self.i_mins_sigma[0][i]:self.i_mins_sigma[0][i+1]]
             self.pics_array_sigma.append(y_pic_sigma[pics_sigma[0]])
-
     #Fonctions de visualisation         
     def image(self): 
         plt.imshow(self.data)
@@ -187,7 +187,64 @@ class zeeman:
     
         plt.show()
         
+    def dessin_cercle_1D(self,num_cercle=1):
         
+        fig,ax = plt.subplots(1,figsize=(30,30))
+        ax.imshow(self.data)
+        
+        intensites = []
+        cercles = []
+        
+        n=0
+        for pic_prin in self.pics_array:
+            cercles_sec = []
+            for pic_sec in pic_prin: 
+                #On dessine le cercle
+                cercle = circle_perimeter(self.ix_mil, self.iy_mil,np.abs(pic_sec-self.iy_mil))
+                cercles_sec.append(cercle)
+                
+                if n==num_cercle:
+                    ax.plot(cercle[0],cercle[1],'ro',markersize=0.5)
+                n+=1
+            cercles.append(cercles_sec)
+            
+        return cercles
+        
+    def methode_cercle(self): 
+        
+        intensites = []
+        n=0
+        for radius in np.abs(self.y-self.iy_mil): 
+            cercle = circle_perimeter(self.ix_mil, self.iy_mil,radius)
+            data = self.data_array[:,:,1]
+            intensite = np.mean(data[cercle[1],cercle[0]])
+            intensites.append(intensite)
+              
+        #Trouver les pics dans les sections
+        pics_cercle = [] #Chaque élément sera une liste des pics d'une section
+        intensites = np.array(intensites)
+        i_mins = find_peaks(-intensites,height=-15,distance=30)
+        
+        for i in range(0,len(i_mins[0])-1): 
+            pics = find_peaks(intensites[i_mins[0][i]:i_mins[0][i+1]],height=20)
+            y_pic = self.y[i_mins[0][i]:i_mins[0][i+1]]
+            pics_cercle.append(y_pic[pics[0]])   
+        n_pics = len(pics_cercle)
+        fig,axes = plt.subplots(n_pics,figsize=(10,35),squeeze=True)
+        
+        for p in range(n_pics):
+            ax = axes[p]
+            i_debut = i_mins[0][p]
+            i_fin = i_mins[0][p+1]
+            ax.plot(self.y[i_debut:i_fin],intensites[i_debut:i_fin],label="pic = {}".format(p+1))
+            ax.vlines(pics_cercle[p],0,250,linestyle="--",color="g") 
+            ax.set_xlabel("y")
+            ax.set_ylabel("Intensité")
+            ax.legend()
+        plt.show()
+        
+        return intensites,pics_cercle
+            
     def energie(self,skip=0):
         plt.figure(1, figsize=(10,4), dpi=400)
         plt.xlabel("Rang du pic d'interférence (discret)")
@@ -229,4 +286,5 @@ class zeeman:
         energie_tot = np.array([energie1, energie2, energie3, energie4, energie5])
         print(energie_tot)
       
+        
         
