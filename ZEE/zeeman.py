@@ -204,13 +204,13 @@ class zeeman:
                 cercles_sec.append(cercle)
                 
                 if n==num_cercle:
-                    ax.plot(cercle[0],cercle[1],'ro',markersize=0.5)
+                    ax.plot(cercle[0],cercle[1],'ro',markersize=1)
                 n+=1
             cercles.append(cercles_sec)
             
         return cercles
         
-    def methode_cercle(self): 
+    def methode_cercle(self,show=False): 
         
         intensites = []
         n=0
@@ -219,7 +219,13 @@ class zeeman:
             data = self.data_array[:,:,1]
             intensite = np.mean(data[cercle[1],cercle[0]])
             intensites.append(intensite)
-              
+        
+        if show==True:
+            plt.plot(self.y, intensites)
+            plt.xlabel("y")
+            plt.ylabel("Intensité")
+            plt.show()
+            
         #Trouver les pics dans les sections
         pics_cercle = [] #Chaque élément sera une liste des pics d'une section
         intensites = np.array(intensites)
