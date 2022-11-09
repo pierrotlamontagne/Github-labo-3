@@ -135,7 +135,6 @@ class zeeman:
         
         if pic == False:   
             plt.plot(self.y,self.data_1D)
-            plt.title("Profil d'intensité")
             plt.xlabel("y")
             plt.ylabel("Intensité")
         
