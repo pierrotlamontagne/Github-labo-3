@@ -100,6 +100,9 @@ class zeeman:
         plt.title("Polarisation 45 degrés")
         plt.show()
         
+        print(self.ix_mil)
+        print(self.iy_mil)
+        
     def image_pi(self): 
         plt.imshow(self.data_pi)
         plt.hlines(self.iy_mil, self.ix_min, self.ix_max)

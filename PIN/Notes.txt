@@ -1,0 +1,9 @@
+laser 400nm polariser horizontalement
+
+
+Temps d'integration de 30s
+
+
+tourner polariser par bond de 10° sur 180°
+
+On a du H qui émet du V
